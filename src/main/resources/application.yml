@@ -1,0 +1,109 @@
+spring:
+  application:
+    name: mcp-demo
+  
+  # Configuración MCP
+  ai:
+    mcp:
+      server:
+        transport: sse
+        capabilities:
+          tools: true
+          resources: true
+          prompts: true
+          completions: true
+        
+  # Base de datos
+  datasource:
+    url: jdbc:postgresql://localhost:5432/automotive_credit
+    username: ${DB_USERNAME:credit_user}
+    password: ${DB_PASSWORD:credit_pass}
+    driver-class-name: org.postgresql.Driver
+    
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        
+  # Cliente Feign
+  cloud:
+    openfeign:
+      client:
+        config:
+          default:
+            connectTimeout: 5000
+            readTimeout: 10000
+            loggerLevel: basic
+          credit-score-service:
+            connectTimeout: 3000
+            readTimeout: 8000
+          vehicle-validation-service:
+            connectTimeout: 2000
+            readTimeout: 5000
+
+# Configuración de servicios externos
+services:
+  credit-score:
+    url: ${CREDIT_SCORE_SERVICE_URL:http://localhost:8081}
+  vehicle-validation:
+    url: ${VEHICLE_SERVICE_URL:http://localhost:8082}
+  document-validation:
+    url: ${DOCUMENT_SERVICE_URL:http://localhost:8083}
+  notification:
+    url: ${NOTIFICATION_SERVICE_URL:http://localhost:8084}
+
+# Circuit Breaker
+resilience4j:
+  circuitbreaker:
+    configs:
+      default:
+        slidingWindowSize: 20
+        minimumNumberOfCalls: 5
+        waitDurationInOpenState: 30s
+        failureRateThreshold: 50
+        permittedNumberOfCallsInHalfOpenState: 3
+    instances:
+      credit-score-service:
+        baseConfig: default
+      vehicle-validation-service:
+        baseConfig: default
+        failureRateThreshold: 60
+        waitDurationInOpenState: 60s
+
+# Seguridad
+security:
+  default-auth-token: ${DEFAULT_AUTH_TOKEN:default-secure-token}
+
+# Métricas y monitoreo
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,metrics,prometheus,info
+  endpoint:
+    health:
+      show-details: always
+    metrics:
+      enabled: true
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+
+# Logging
+logging:
+  level:
+    mx.regional.next.automotive.credit: INFO
+    org.springframework.cloud.openfeign: DEBUG
+    org.springframework.ai.mcp: DEBUG
+    org.springframework.web.reactive: DEBUG
+  pattern:
+    console: "%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"
+
+# Server
+server:
+  port: 8080

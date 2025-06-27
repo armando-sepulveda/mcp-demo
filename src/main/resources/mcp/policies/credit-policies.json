@@ -1,0 +1,135 @@
+{
+  "creditPolicies": {
+    "version": "1.0",
+    "lastUpdated": "2024-01-15",
+    "eligibilityCriteria": {
+      "customer": {
+        "minAge": 18,
+        "maxAgeAtTermEnd": 70,
+        "minMonthlyIncome": 2500000,
+        "minWorkExperienceMonths": {
+          "employee": 12,
+          "independent": 24
+        },
+        "minCreditScore": 600,
+        "maxPaymentToIncomeRatio": 0.30,
+        "maxDebtToIncomeRatio": 0.40
+      },
+      "vehicle": {
+        "minYear": 2018,
+        "maxKilometers": 100000,
+        "approvedBrands": [
+          "TOYOTA",
+          "CHEVROLET", 
+          "RENAULT",
+          "NISSAN",
+          "HYUNDAI",
+          "KIA",
+          "MAZDA",
+          "FORD"
+        ],
+        "minValue": 50000000,
+        "maxValue": 300000000,
+        "requiredDocuments": [
+          "SOAT_VIGENTE",
+          "TECNOMECANICA_VIGENTE"
+        ]
+      }
+    },
+    "creditConditions": {
+      "amounts": {
+        "minAmount": 20000000,
+        "maxAmount": 200000000,
+        "maxFinancingRatio": 0.90
+      },
+      "terms": {
+        "minTermMonths": 12,
+        "maxTermMonths": 84,
+        "standardTermMonths": 60
+      },
+      "interestRates": {
+        "byScore": {
+          "800_850": {
+            "minRate": 0.105,
+            "maxRate": 0.120,
+            "avgRate": 0.1125
+          },
+          "750_799": {
+            "minRate": 0.120,
+            "maxRate": 0.140,
+            "avgRate": 0.130
+          },
+          "700_749": {
+            "minRate": 0.140,
+            "maxRate": 0.160,
+            "avgRate": 0.150
+          },
+          "650_699": {
+            "minRate": 0.160,
+            "maxRate": 0.180,
+            "avgRate": 0.170
+          },
+          "600_649": {
+            "minRate": 0.180,
+            "maxRate": 0.200,
+            "avgRate": 0.190
+          }
+        }
+      }
+    },
+    "requiredDocuments": {
+      "customer": [
+        "CEDULA_CIUDADANIA",
+        "CERTIFICADO_LABORAL",
+        "ULTIMAS_3_NOMINAS",
+        "EXTRACTOS_BANCARIOS_3_MESES",
+        "DECLARACION_RENTA"
+      ],
+      "vehicle": [
+        "TARJETA_PROPIEDAD",
+        "TECNOMECANICA_VIGENTE",
+        "SOAT_VIGENTE",
+        "AVALUO_COMERCIAL",
+        "INSPECCION_TECNICA_BANCO"
+      ]
+    },
+    "exclusionCriteria": [
+      "MORA_SUPERIOR_60_DIAS",
+      "PROCESOS_JUDICIALES_VIGENTES",
+      "ANTECEDENTES_FRAUDE",
+      "LISTAS_CONTROL_INTERNACIONALES",
+      "VEHICULOS_PROBLEMAS_LEGALES",
+      "ACTIVIDADES_ALTO_RIESGO"
+    ],
+    "evaluationProcess": {
+      "steps": [
+        {
+          "step": 1,
+          "name": "VALIDACION_DOCUMENTOS",
+          "durationDays": "1-2"
+        },
+        {
+          "step": 2,
+          "name": "EVALUACION_CREDITICIA", 
+          "durationDays": "2-3"
+        },
+        {
+          "step": 3,
+          "name": "INSPECCION_VEHICULO",
+          "durationDays": "1"
+        },
+        {
+          "step": 4,
+          "name": "COMITE_CREDITO",
+          "durationDays": "1-2"
+        },
+        {
+          "step": 5,
+          "name": "APROBACION_FINAL",
+          "durationDays": "1"
+        }
+      ],
+      "totalEstimatedDays": "5-8"
+    }
+  }
+}

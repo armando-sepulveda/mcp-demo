@@ -1,0 +1,151 @@
+{
+  "vehicleCatalog": {
+    "version": "1.0",
+    "lastUpdated": "2024-01-15",
+    "approvedBrands": {
+      "TOYOTA": {
+        "name": "Toyota",
+        "models": [
+          {
+            "name": "COROLLA",
+            "category": "SEDAN",
+            "minYear": 2018,
+            "estimatedValue": {
+              "new": 85000000,
+              "used2021": 75000000,
+              "used2020": 68000000,
+              "used2019": 62000000,
+              "used2018": 55000000
+            }
+          },
+          {
+            "name": "RAV4",
+            "category": "SUV",
+            "minYear": 2018,
+            "estimatedValue": {
+              "new": 145000000,
+              "used2021": 130000000,
+              "used2020": 118000000,
+              "used2019": 108000000,
+              "used2018": 95000000
+            }
+          },
+          {
+            "name": "HILUX",
+            "category": "PICKUP",
+            "minYear": 2018,
+            "estimatedValue": {
+              "new": 135000000,
+              "used2021": 120000000,
+              "used2020": 108000000,
+              "used2019": 98000000,
+              "used2018": 85000000
+            }
+          }
+        ]
+      },
+      "CHEVROLET": {
+        "name": "Chevrolet",
+        "models": [
+          {
+            "name": "ONIX",
+            "category": "HATCHBACK",
+            "minYear": 2018,
+            "estimatedValue": {
+              "new": 65000000,
+              "used2021": 58000000,
+              "used2020": 52000000,
+              "used2019": 47000000,
+              "used2018": 42000000
+            }
+          },
+          {
+            "name": "TRACKER",
+            "category": "SUV",
+            "minYear": 2018,
+            "estimatedValue": {
+              "new": 95000000,
+              "used2021": 85000000,
+              "used2020": 76000000,
+              "used2019": 68000000,
+              "used2018": 58000000
+            }
+          }
+        ]
+      },
+      "RENAULT": {
+        "name": "Renault",
+        "models": [
+          {
+            "name": "LOGAN",
+            "category": "SEDAN",
+            "minYear": 2018,
+            "estimatedValue": {
+              "new": 58000000,
+              "used2021": 52000000,
+              "used2020": 46000000,
+              "used2019": 42000000,
+              "used2018": 38000000
+            }
+          },
+          {
+            "name": "DUSTER",
+            "category": "SUV",
+            "minYear": 2018,
+            "estimatedValue": {
+              "new": 78000000,
+              "used2021": 70000000,
+              "used2020": 62000000,
+              "used2019": 56000000,
+              "used2018": 48000000
+            }
+          }
+        ]
+      },
+      "NISSAN": {
+        "name": "Nissan",
+        "models": [
+          {
+            "name": "VERSA",
+            "category": "SEDAN",
+            "minYear": 2018,
+            "estimatedValue": {
+              "new": 72000000,
+              "used2021": 64000000,
+              "used2020": 58000000,
+              "used2019": 52000000,
+              "used2018": 46000000
+            }
+          },
+          {
+            "name": "KICKS",
+            "category": "SUV",
+            "minYear": 2018,
+            "estimatedValue": {
+              "new": 88000000,
+              "used2021": 78000000,
+              "used2020": 70000000,
+              "used2019": 62000000,
+              "used2018": 54000000
+            }
+          }
+        ]
+      }
+    },
+    "eligibilityRules": {
+      "maxAge": 6,
+      "maxKilometers": 100000,
+      "requiredInspections": [
+        "TECNOMECANICA",
+        "SOAT",
+        "INSPECCION_BANCO"
+      ],
+      "excludedConditions": [
+        "ACCIDENTE_GRAVE",
+        "INUNDACION",
+        "PROBLEMAS_MOTOR",
+        "CHASIS_DAÑADO"
+      ]
+    }
+  }
+}
