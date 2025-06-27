@@ -1,0 +1,289 @@
+package mx.regional.next.automotive.credit.infrastructure.mcp.server;
+
+import mx.regional.next.automotive.credit.infrastructure.mcp.tools.*;
+import mx.regional.next.automotive.credit.infrastructure.mcp.resources.CreditPoliciesResource;
+import mx.regional.next.automotive.credit.infrastructure.mcp.prompts.CreditAnalystPrompt;
+
+import org.springframework.stereotype.Component;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.event.EventListener;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.annotation.PreDestroy;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
+@Component
+public class AutomotiveCreditMcpServer {
+    
+    private static final Logger log = LoggerFactory.getLogger(AutomotiveCreditMcpServer.class);
+    
+    // MCP Tools
+    private final ProcessCreditApplicationTool processCreditApplicationTool;
+    private final ValidateCustomerDocumentsTool validateCustomerDocumentsTool;
+    private final CheckVehicleEligibilityTool checkVehicleEligibilityTool;
+    private final GetCreditApplicationStatusTool getCreditApplicationStatusTool;
+    
+    // MCP Resources
+    private final CreditPoliciesResource creditPoliciesResource;
+    
+    // MCP Prompts
+    private final CreditAnalystPrompt creditAnalystPrompt;
+    
+    // Server state
+    private boolean serverRunning = false;
+    private final Map<String, Object> serverMetrics = new ConcurrentHashMap<>();
+    
+    public AutomotiveCreditMcpServer(
+            ProcessCreditApplicationTool processCreditApplicationTool,
+            ValidateCustomerDocumentsTool validateCustomerDocumentsTool,
+            CheckVehicleEligibilityTool checkVehicleEligibilityTool,
+            GetCreditApplicationStatusTool getCreditApplicationStatusTool,
+            CreditPoliciesResource creditPoliciesResource,
+            CreditAnalystPrompt creditAnalystPrompt) {
+        
+        this.processCreditApplicationTool = processCreditApplicationTool;
+        this.validateCustomerDocumentsTool = validateCustomerDocumentsTool;
+        this.checkVehicleEligibilityTool = checkVehicleEligibilityTool;
+        this.getCreditApplicationStatusTool = getCreditApplicationStatusTool;
+        this.creditPoliciesResource = creditPoliciesResource;
+        this.creditAnalystPrompt = creditAnalystPrompt;
+        
+        log.info("Servidor MCP de Crédito Automotriz inicializado");
+    }
+    
+    @EventListener(ApplicationReadyEvent.class)
+    public void startServer() {
+        try {
+            log.info("🚀 Iniciando Servidor MCP de Crédito Automotriz...");
+            
+            // Registrar herramientas MCP
+            registerTools();
+            
+            // Registrar recursos MCP
+            registerResources();
+            
+            // Registrar prompts MCP
+            registerPrompts();
+            
+            // Inicializar métricas
+            initializeMetrics();
+            
+            // Marcar servidor como activo
+            serverRunning = true;
+            
+            log.info("✅ Servidor MCP de Crédito Automotriz iniciado exitosamente");
+            log.info("📊 Herramientas disponibles: {}", getAvailableToolsCount());
+            log.info("📚 Recursos disponibles: {}", getAvailableResourcesCount());
+            log.info("💬 Prompts disponibles: {}", getAvailablePromptsCount());
+            
+        } catch (Exception e) {
+            log.error("❌ Error iniciando Servidor MCP de Crédito Automotriz", e);
+            serverRunning = false;
+            throw new RuntimeException("Error iniciando servidor MCP", e);
+        }
+    }
+    
+    @PreDestroy
+    public void stopServer() {
+        try {
+            log.info("🛑 Deteniendo Servidor MCP de Crédito Automotriz...");
+            
+            serverRunning = false;
+            
+            // Limpiar recursos
+            serverMetrics.clear();
+            
+            log.info("✅ Servidor MCP de Crédito Automotriz detenido exitosamente");
+            
+        } catch (Exception e) {
+            log.error("❌ Error deteniendo Servidor MCP de Crédito Automotriz", e);
+        }
+    }
+    
+    private void registerTools() {
+        log.debug("Registrando herramientas MCP...");
+        
+        // Las herramientas se registran automáticamente por las anotaciones @Tool
+        // Este método puede usarse para registro manual adicional si es necesario
+        
+        List<String> toolNames = List.of(
+            "process_credit_application",
+            "validate_customer_documents", 
+            "check_vehicle_eligibility",
+            "get_credit_application_status",
+            "calculate_monthly_installment",
+            "get_document_requirements",
+            "get_authorized_vehicle_brands",
+            "get_credit_status_by_document",
+            "get_credit_status_summary"
+        );
+        
+        log.debug("Herramientas MCP registradas: {}", toolNames);
+        serverMetrics.put("registered_tools", toolNames.size());
+    }
+    
+    private void registerResources() {
+        log.debug("Registrando recursos MCP...");
+        
+        // Los recursos se registran automáticamente por las anotaciones @McpResource
+        // Este método puede usarse para registro manual adicional si es necesario
+        
+        List<String> resourceUris = List.of(
+            "credit://policies",
+            "credit://interest-rates",
+            "credit://documents/natural",
+            "credit://documents/juridica", 
+            "credit://documents/vehiculo",
+            "credit://eligibility-criteria",
+            "credit://resource/{resource_name}"
+        );
+        
+        log.debug("Recursos MCP registrados: {}", resourceUris);
+        serverMetrics.put("registered_resources", resourceUris.size());
+    }
+    
+    private void registerPrompts() {
+        log.debug("Registrando prompts MCP...");
+        
+        // Los prompts se registran automáticamente por las anotaciones @McpPrompt
+        // Este método puede usarse para registro manual adicional si es necesario
+        
+        List<String> promptNames = List.of(
+            "credit_analyst"
+        );
+        
+        log.debug("Prompts MCP registrados: {}", promptNames);
+        serverMetrics.put("registered_prompts", promptNames.size());
+    }
+    
+    private void initializeMetrics() {
+        log.debug("Inicializando métricas del servidor MCP...");
+        
+        serverMetrics.put("server_start_time", System.currentTimeMillis());
+        serverMetrics.put("total_requests", 0L);
+        serverMetrics.put("successful_requests", 0L);
+        serverMetrics.put("failed_requests", 0L);
+        serverMetrics.put("average_response_time", 0.0);
+        
+        log.debug("Métricas inicializadas: {}", serverMetrics.keySet());
+    }
+    
+    // Métodos de información del servidor
+    public boolean isServerRunning() {
+        return serverRunning;
+    }
+    
+    public Map<String, Object> getServerMetrics() {
+        return Map.copyOf(serverMetrics);
+    }
+    
+    public String getServerInfo() {
+        return String.format("""
+            🏦 **SERVIDOR MCP CRÉDITO AUTOMOTRIZ**
+            
+            📊 **Estado:** %s
+            🔧 **Herramientas:** %d disponibles
+            📚 **Recursos:** %d disponibles  
+            💬 **Prompts:** %d disponibles
+            ⏱️ **Tiempo activo:** %s
+            📈 **Requests totales:** %s
+            ✅ **Requests exitosos:** %s
+            ❌ **Requests fallidos:** %s
+            
+            🎯 **Capacidades Principales:**
+            • Procesamiento de solicitudes de crédito
+            • Validación de documentos de clientes
+            • Verificación de elegibilidad de vehículos
+            • Consulta de estados de solicitudes
+            • Cálculo de cuotas mensuales
+            • Acceso a políticas crediticias
+            • Asesoría especializada de crédito automotriz
+            """,
+            serverRunning ? "🟢 ACTIVO" : "🔴 INACTIVO",
+            getAvailableToolsCount(),
+            getAvailableResourcesCount(),
+            getAvailablePromptsCount(),
+            formatUptime(),
+            serverMetrics.getOrDefault("total_requests", 0L),
+            serverMetrics.getOrDefault("successful_requests", 0L),
+            serverMetrics.getOrDefault("failed_requests", 0L)
+        );
+    }
+    
+    public List<String> getAvailableTools() {
+        return List.of(
+            "process_credit_application - Procesa solicitudes de crédito automotriz",
+            "validate_customer_documents - Valida documentación de clientes",
+            "check_vehicle_eligibility - Verifica elegibilidad de vehículos", 
+            "get_credit_application_status - Consulta estado de solicitudes",
+            "calculate_monthly_installment - Calcula cuotas mensuales",
+            "get_document_requirements - Obtiene requisitos de documentos",
+            "get_authorized_vehicle_brands - Lista marcas autorizadas",
+            "get_credit_status_by_document - Consulta por documento",
+            "get_credit_status_summary - Resumen de estados"
+        );
+    }
+    
+    public List<String> getAvailableResources() {
+        return List.of(
+            "credit://policies - Políticas y criterios crediticios",
+            "credit://interest-rates - Tasas de interés vigentes",
+            "credit://documents/* - Documentos requeridos por tipo",
+            "credit://eligibility-criteria - Criterios de elegibilidad",
+            "credit://resource/* - Recursos dinámicos"
+        );
+    }
+    
+    public List<String> getAvailablePrompts() {
+        return List.of(
+            "credit_analyst - Prompt principal para analista de crédito automotriz"
+        );
+    }
+    
+    // Métodos de utilidad
+    private int getAvailableToolsCount() {
+        return (Integer) serverMetrics.getOrDefault("registered_tools", 0);
+    }
+    
+    private int getAvailableResourcesCount() {
+        return (Integer) serverMetrics.getOrDefault("registered_resources", 0);
+    }
+    
+    private int getAvailablePromptsCount() {
+        return (Integer) serverMetrics.getOrDefault("registered_prompts", 0);
+    }
+    
+    private String formatUptime() {
+        Long startTime = (Long) serverMetrics.get("server_start_time");
+        if (startTime == null) return "N/A";
+        
+        long uptimeMs = System.currentTimeMillis() - startTime;
+        long uptimeMinutes = uptimeMs / (1000 * 60);
+        long uptimeHours = uptimeMinutes / 60;
+        long uptimeDays = uptimeHours / 24;
+        
+        if (uptimeDays > 0) {
+            return String.format("%dd %dh %dm", uptimeDays, uptimeHours % 24, uptimeMinutes % 60);
+        } else if (uptimeHours > 0) {
+            return String.format("%dh %dm", uptimeHours, uptimeMinutes % 60);
+        } else {
+            return String.format("%dm", uptimeMinutes);
+        }
+    }
+    
+    // Métodos para actualizar métricas (pueden ser llamados por aspectos o interceptores)
+    public void incrementTotalRequests() {
+        serverMetrics.compute("total_requests", (k, v) -> ((Long) v) + 1);
+    }
+    
+    public void incrementSuccessfulRequests() {
+        serverMetrics.compute("successful_requests", (k, v) -> ((Long) v) + 1);
+    }
+    
+    public void incrementFailedRequests() {
+        serverMetrics.compute("failed_requests", (k, v) -> ((Long) v) + 1);
+    }
+}
