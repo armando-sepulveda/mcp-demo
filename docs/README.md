@@ -19,6 +19,35 @@ Esta carpeta contiene documentación detallada sobre la implementación de Arqui
 - Si quieres entender el flujo completo de datos
 - Si necesitas refactorizar código existente
 
+### [🤖 Responsabilidades de las Capas MCP](./mcp-layers-responsibilities.md)
+**Guía especializada en MCP que explica:**
+- Responsabilidades específicas de Tools, Resources y Prompts
+- Relación entre capas MCP y Arquitectura Hexagonal
+- Flujos completos de interacción agente-sistema
+- Dónde va la lógica de negocio vs adaptación MCP
+- Errores comunes en implementaciones MCP
+- Debugging y observabilidad por capas
+
+**¿Cuándo leer esta guía?**
+- Si trabajas con Model Context Protocol
+- Si no sabes dónde poner lógica en herramientas MCP
+- Si quieres entender cómo los agentes IA interactúan con el sistema
+- Si necesitas implementar nuevas capacidades MCP
+
+### [🔧 Análisis de Configuración MCP](./mcp-configuration-analysis.md)
+**Análisis técnico que cubre:**
+- Problemas en configuraciones MCP existentes
+- Soluciones implementadas para auto-descubrimiento
+- Configuración robusta de servidores MCP
+- Manejo de proxies Spring y anotaciones
+- Mejores prácticas de configuración
+
+**¿Cuándo leer esta guía?**
+- Si tienes problemas con configuración MCP
+- Si las herramientas MCP no se registran automáticamente
+- Si trabajas con Spring Boot y MCP
+- Si quieres entender la configuración del servidor
+
 ---
 
 ## 🎯 Próximas Guías (Planificadas)
